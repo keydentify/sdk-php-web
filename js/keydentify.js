@@ -50,9 +50,7 @@ var keyd = {
 		},
 		openConn: function(token) {
 		    if (!this.eb) {
-		    	this.eb = new vertx.EventBus("https://app.keydentify.com/eventbus");
-		    	//this.eb = new vertx.EventBus("http://192.168.1.10:8080/eventbus");
-		    	
+		    	this.eb = new vertx.EventBus("https://app.keydentify.com/eventbus");		    	
 		        var me = this;
 		        
 		        this.eb.onopen = function () {
@@ -76,18 +74,18 @@ var keyd = {
 		},
 		
 		sendIt: function(msg, token) {
-        	this.closeConn();
-        	if (msg) {
-				if (msg.error && msg.error != '') {
-					alert(msg.error);
-					this.fKeydentifyResponse.value = 'error';
-				} else if (msg.result && msg.result != '') {
-					this.fKeydentifyResponse.value = msg.result;
-	        	}
-        	}
-        	if (this.fKeydentifyResponse != null) {
-        		this.fKeydentifyResponse.form.submit();
-        	}
+        		this.closeConn();
+			if (msg) {
+					if (msg.error && msg.error != '') {
+						alert(msg.error);
+						this.fKeydentifyResponse.value = 'error';
+					} else if (msg.result && msg.result != '') {
+						this.fKeydentifyResponse.value = msg.result;
+				}
+			}
+			if (this.fKeydentifyResponse != null) {
+				this.fKeydentifyResponse.form.submit();
+			}
 		},
 		
 		closeConn: function(msg, token) {

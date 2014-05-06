@@ -39,7 +39,7 @@ class KeydentifyAPI extends KeydentifyLib {
 		// Generate challenge
 		$algorithm = 'sha1';
 		$salt = KeydentifyAPI::buildRandomKey(64);
-		$nbrIterations = rand(16, 256);
+		$nbrIterations = rand(512, 1024);
 		
 		// Request fingerprint
 		$sha256 = sha256($authType.$serviceId.$serviceUserId.$algorithm.$salt.$nbrIterations.sha256($secretKey).$serviceUserIp.$login.$email.$phoneNumber);
@@ -49,9 +49,9 @@ class KeydentifyAPI extends KeydentifyLib {
 		$phoneNumber = urlencode($phoneNumber);
 		
 		$post_fields = array('auth_type' => $authType, 'service_id' => $serviceId, 'service_user_id' => $serviceUserId,
-							 'service_algorithm' => $algorithm, 'service_salt' => urlencode($salt), 'service_iterations' => $nbrIterations, 'service_sha256' => $sha256,
-							 'service_user_login' => $login, 'service_user_ip' => $serviceUserIp, 'service_user_locale' => $locale, 'service_user_email' => $email,
-							 'service_user_phone_number' => $phoneNumber
+					'service_algorithm' => $algorithm, 'service_salt' => urlencode($salt), 'service_iterations' => $nbrIterations, 'service_sha256' => $sha256,
+					'service_user_login' => $login, 'service_user_ip' => $serviceUserIp, 'service_user_locale' => $locale, 'service_user_email' => $email,
+					'service_user_phone_number' => $phoneNumber
 							);
 		$keydResponse = KeydentifyAPI::postData(KEYDENTIFY_SERVER . '/requestAuth', $post_fields);
 		
@@ -110,7 +110,7 @@ class KeydentifyAPI extends KeydentifyLib {
 				} else {
 					$sha256 = sha256($postData['keydToken'].$serviceId.$serviceUserId.$postData['keydAuthType']);
 					$post_fields = array('auth_type' => $postData['keydAuthType'], 'token' => $postData['keydToken'],
-										 'service_id' => $serviceId, 'service_user_id' => $serviceUserId, 'service_sha256' => $sha256);
+								'service_id' => $serviceId, 'service_user_id' => $serviceUserId, 'service_sha256' => $sha256);
 					$output = KeydentifyAPI::postData(KEYDENTIFY_SERVER . '/authConfirm', $post_fields);
 				}
 			} else {
@@ -125,8 +125,8 @@ class KeydentifyAPI extends KeydentifyLib {
 			if ($postData['keydResponse'] != 'error') {
 				$sha256 = sha256($postData['keydToken'].$serviceId.$serviceUserId.$postData['keydAuthType'].$message);
 				$post_fields = array('auth_type' => $postData['keydAuthType'], 'token' => $postData['keydToken'],
-									 'service_id' => $serviceId, 'service_user_id' => $serviceUserId,
-									 'error' => $message, 'service_sha256' => $sha256);
+							'service_id' => $serviceId, 'service_user_id' => $serviceUserId,
+							'error' => $message, 'service_sha256' => $sha256);
 				$output = KeydentifyAPI::postData(KEYDENTIFY_SERVER . '/authFailed', $post_fields);
 			}
 			return $messageLibs[$message];
@@ -140,9 +140,9 @@ class KeydentifyAPI extends KeydentifyLib {
 
 		if (isset($postData['keydTimeout']) && $postData['keydTimeout'] != ''
 				&& isset($postData['keydDelay']) && $postData['keydDelay'] != ''
-						&& isset($postData['keydToken']) //&& $postData['keydToken'] != ''
-								&& isset($postData['keydCSRF']) && $postData['keydCSRF'] != ''
-										&& isset($postData['keydChallenge']) && $postData['keydChallenge'] != '') {
+				&& isset($postData['keydToken'])
+				&& isset($postData['keydCSRF']) && $postData['keydCSRF'] != ''
+				&& isset($postData['keydChallenge']) && $postData['keydChallenge'] != '') {
 
 			if ($postData['keydTimeout'] > time()) {
 				# Check data integrity
@@ -196,6 +196,10 @@ class KeydentifyAPI extends KeydentifyLib {
 				'<input type="hidden" name="redirect_to" id="redirect_to" value="'.$redirectTo.'"/>' .
 				'<input type="hidden" name="login" id="login" value="'.$login.'"/>';
 
+		if ($login == '') {
+			$html .= '<input type="hidden" name="suid" id="suid" value="'.$serviceUserId.'"/>';
+		}
+		
 		return $html . '<input type="hidden" name="keydCSRF" value="'.$csrf.'"/>'; //, $extraCSRF
 	}
 }

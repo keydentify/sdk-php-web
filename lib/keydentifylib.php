@@ -15,7 +15,6 @@
  */
 require_once('sha256.inc.php');
 define('KEYDENTIFY_SERVER', 'https://app.keydentify.com');
-//define('KEYDENTIFY_SERVER', 'http://192.168.1.10:8080');
 
 class KeydentifyLib {
 
@@ -27,9 +26,9 @@ class KeydentifyLib {
 			$postdata = http_build_query($post_fields);
 			$opts = array('http' =>
 					array(
-							'method'  => 'POST',
-							'header'  => 'Content-type: application/x-www-form-urlencoded',
-							'content' => $postdata
+						'method'  => 'POST',
+						'header'  => 'Content-type: application/x-www-form-urlencoded',
+						'content' => $postdata
 					)
 			);
 	
@@ -45,8 +44,6 @@ class KeydentifyLib {
 			curl_setopt($c, CURLOPT_POSTFIELDS, http_build_query($post_fields));
 			curl_setopt($c, CURLOPT_SSLVERSION, 3);
 			$output = curl_exec($c);
-			//var_dump(curl_error($c));
-			//var_dump($output);
 			//if($output === false) {trigger_error('Erreur curl : '.curl_error($c),E_USER_WARNING);}
 			curl_close($c);
 		}
