@@ -58,7 +58,7 @@ function demo() {
 				<button class="btn btn-primary" type="submit">Sign in</button>
 			</div>
 		</form>
-		<p style="margin-top: 15px;">>Authentication secured by <a href="http://www.keydentify.com" target="_blank">Keydentify</a>. Your smartphone is required!</p>
+		<p style="margin-top: 15px;">Authentication secured by <a href="http://www.keydentify.com" target="_blank">Keydentify</a>. Your smartphone is required!</p>
 		
 		<script type="text/javascript">
 			function formOnSubmit() {
