@@ -43,7 +43,7 @@ class KeydentifyLib {
 			curl_setopt($c, CURLOPT_POST,true);
 			curl_setopt($c, CURLOPT_POSTFIELDS, http_build_query($post_fields));
 			curl_setopt($c, CURLOPT_SSLVERSION, 3);
-			curl_setopt($c, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
+			//curl_setopt($c, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
 			$output = curl_exec($c);
 			//if($output === false) {trigger_error('Erreur curl : '.curl_error($c),E_USER_WARNING);}
 			curl_close($c);
