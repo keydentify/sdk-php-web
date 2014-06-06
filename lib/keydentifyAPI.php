@@ -86,6 +86,8 @@ class KeydentifyAPI extends KeydentifyLib {
 
 	public static function checkKeydentifyResponse($serviceId, $serviceUserId, $secretKey, $postData) {
 
+ 		$serviceUserId = urlencode($serviceUserId);
+		
 		$message = 'W0';
 		$messageLibs = array(
 				'W0' => '',
@@ -104,7 +106,7 @@ class KeydentifyAPI extends KeydentifyLib {
 					$postData['keydChallenge'] = KeydentifyAPI::decryptChallenge($serviceId.$serviceUserId, $postData['keydChallenge']);
 					list($algorithm, $count, $salt) = explode(":", $postData['keydChallenge']);
 					
-					if ($postData['keydResponse'] != KeydentifyAPI::pbkdf2($serviceId.$serviceUserId.$secretKey, $salt, $count, $algorithm)) {
+					if ($postData['keydResponse'] != KeydentifyAPI::pbkdf2($serviceId.urldecode($serviceUserId).$secretKey, $salt, $count, $algorithm)) {
 						$message = 'W1';
 					}
 				} else {
@@ -147,6 +149,7 @@ class KeydentifyAPI extends KeydentifyLib {
 			if ($postData['keydTimeout'] > time()) {
 				# Check data integrity
 				if ($postData['keydAuthType'] == "1") {
+					
 					if ($postData['keydCSRF'] != KeydentifyAPI::buildCSRF($postData['keydAuthType'], $secretKey, $postData['keydTimeout'], $postData['keydDelay'], $postData['keydToken'], $postData['keydChallenge'], $serviceId, $serviceUserId, $postData['redirect_to'], $postData['login'])) {
 						$message = 'W2';
 					}
