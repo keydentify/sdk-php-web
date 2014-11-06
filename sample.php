@@ -20,8 +20,13 @@ define('USER_LOGIN_PREFIX', 'Sample ');
 
 function demo() {
 	
-	$serviceId = 'FILL WITH GIVEN SERVICE ID';
-	$secretKey = 'FILL WITH GIVEN SECRET KEY';
+	#######################################################################################################
+	## Generate your ID and secret key on your dedicated console : https://www.keydentify.me
+	## 1 - Create your account or login if you already have one
+	## 2 - Create a new service and get it's credentials
+	#######################################################################################################
+	$serviceId = 'FILL_WITH_GIVEN_SERVICE_ID';
+	$secretKey = 'FILL_WITH_GIVEN_SECRET_KEY';
 	
 	$status = 0;
 	
@@ -100,12 +105,13 @@ function demo() {
 		$locale = 'en';
 		
 		# URL where the user will be redirected after it's authentication process
-		$redirectTo = 'http://www.google.com';
+		$redirectTo = 'http://www.where_you_want_dot_com';
 		
 		# User IP address -- Optional
 		$userIP = $_SERVER["REMOTE_ADDR"];
 		
 		# Auth Type : 1 = with Keydentify app, 2 = with 3D Secure by SMS, 3 = with 3D Secure by Phone Call -- Optional, by default 1
+		# SMS and Voice call are currently in beta test. You cannot use them ...
 		$authType = 1;
 		
 		# Optional except when using authType 2 (SMS) or 3 (phone call)
@@ -121,7 +127,7 @@ function demo() {
 		
 		if (is_null($requestAuth) || !$requestAuth) { # An error occured : unable to contact Keydentify
 			echo $requestAuth;
-		} else if (!is_array($requestAuth)) {         # A warning is sent by Keydentify Plugin or Keydentify server
+		} else if (!is_array($requestAuth)) {         # A warning is sent by Keydentify Connector or Keydentify server
 			echo $requestAuth;
 		} else {                                      # Ask the user to confirm his identity
 			?>		   	
@@ -133,7 +139,7 @@ function demo() {
 				<script src="js/keydentify.js" type="text/javascript"></script>
 				
 				<form accept-charset="utf-8" method="post" id="KeydentifyCheckAuthForm">
-					<?php echo $requestAuth['html'];?>
+					<?php echo $requestAuth['html']; ?>
 				</form>
 			</div>
 			<!-- /Keydentify - Two-Factor Authentication -->	
@@ -176,6 +182,7 @@ function demo() {
 			$error = __("Keydentify - Two-Factor Authentication failed", "keydentify")." : ".$check;
 		} else {
 			if (isset($_POST['keydDelay']) && $_POST['keydDelay'] > 60) {
+				# If the delay fix by keydentify is superior to 60 seconds, your user is in an enrolment case
 				$status = 'Congratulation, you have successfully enroll your customer ID '.$custId.'. <a href="sample.php?custId='.$custId.'">Click here to retry and discover the simplicity of Keydentify</a>';
 			} else {
 				$status = 'Congratulation, you have successfully confirmed and in a secure way your customer with ID '.$custId.'. <a href="sample.php">Click here to retry</a>';
@@ -222,6 +229,6 @@ function isPost() {
 			<?php demo(); ?>
 		</div>
 	</body>
-	<script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+	<script src="//code.jquery.com/jquery-latest.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 </html>

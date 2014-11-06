@@ -39,7 +39,7 @@ class KeydentifyAPI extends KeydentifyLib {
 		// Generate challenge
 		$algorithm = 'sha1';
 		$salt = KeydentifyAPI::buildRandomKey(64);
-		$nbrIterations = rand(512, 1024);
+		$nbrIterations = mt_rand(512, 1024);
 		
 		// Request fingerprint
 		$sha256 = sha256($authType.$serviceId.$serviceUserId.$algorithm.$salt.$nbrIterations.sha256($secretKey).$serviceUserIp.$login.$email.$phoneNumber);

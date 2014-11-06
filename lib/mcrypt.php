@@ -4,7 +4,7 @@ class HKMCrypt {
 	function encrypt($str, $key, $iv) {
 		$td = mcrypt_module_open('rijndael-256', '', 'cbc', $iv);
 
-		mcrypt_generic_init($td, $key, $iv);
+		mcrypt_generic_init($td, md5($key.$iv), $iv);
 		$encrypted = mcrypt_generic($td, $this->padString($str));
 
 		mcrypt_generic_deinit($td);
@@ -18,7 +18,7 @@ class HKMCrypt {
 		
 		$td = mcrypt_module_open('rijndael-256', '', 'cbc', $iv);
 
-		mcrypt_generic_init($td, $key, $iv);
+		mcrypt_generic_init($td, md5($key.$iv), $iv);
 		$decrypted = mdecrypt_generic($td, $code);
 
 		mcrypt_generic_deinit($td);

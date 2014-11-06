@@ -134,12 +134,12 @@ class KeydentifyLib {
 
 if (!function_exists('openssl_random_pseudo_bytes')) {
 	function openssl_random_pseudo_bytes($size) {
-		$hexa = 'abcdef0123456789ABCDEF0123456789abcdef0123456789ABCDEF0123456789';
+		$hexa = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEF0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZù%*;:!,?./§|~€½Þs²ý^°@º˜óÜwµÄõ¦Æžg$úßÀÿÔéèêîÏÊâá{(Ð(åÁŠ¬ÞT$ôcOw¬«€ä*ð5õ{ñïÂ )]}=+';
 		$len=strlen($hexa)-1;
 
 		$randomHex = '';
 		for ($i=0; $i<$size; $i++) {
-			$randomHex .= substr($hexa, rand(0, $len), 1);
+			$randomHex .= substr($hexa, mt_rand(0, $len), 1);
 		}
 
 		return $randomHex;
